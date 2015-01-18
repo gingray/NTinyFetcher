@@ -5,18 +5,13 @@ using System.Text;
 
 namespace NTinyFetcher
 {
-    public abstract class FetcherBase<TClient> where TClient : class, IWebClient
+    public abstract class FetcherBase<TClient> where TClient : class
     {
-        private readonly TClient _webClient;
-
-        protected FetcherBase(TClient webClient)
-        {
-            _webClient = webClient;
-        }
+        private TClient _webClient;
 
         public void Perform()
         {
-            Configure(_webClient);
+            _webClient = Configure();
             while (true)
             {
                 var url = GetUrl();
@@ -28,14 +23,14 @@ namespace NTinyFetcher
                 }
                 catch (Exception ex)
                 {
-                    ExceptionRecieve(ex);
+                    ExceptionRecieve(ex,url,_webClient);
                 }
             }
         }
 
         protected abstract void MakeAction(string url, TClient webClient);
-        protected abstract void Configure(TClient webClient);
+        protected abstract TClient Configure();
         protected abstract string GetUrl();
-        protected abstract void ExceptionRecieve(Exception ex);
+        protected abstract void ExceptionRecieve(Exception ex, string url, TClient webClient);
     }
 }

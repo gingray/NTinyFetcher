@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTinyFetcher", "NTinyFetcher\NTinyFetcher.csproj", "{78DF68ED-4629-43E2-943B-F0F71B6E5312}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBox", "SandBox\SandBox.csproj", "{00A6F0FD-D220-4AC8-9A6B-789EE01D938B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{78DF68ED-4629-43E2-943B-F0F71B6E5312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DF68ED-4629-43E2-943B-F0F71B6E5312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78DF68ED-4629-43E2-943B-F0F71B6E5312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A6F0FD-D220-4AC8-9A6B-789EE01D938B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A6F0FD-D220-4AC8-9A6B-789EE01D938B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A6F0FD-D220-4AC8-9A6B-789EE01D938B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A6F0FD-D220-4AC8-9A6B-789EE01D938B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
