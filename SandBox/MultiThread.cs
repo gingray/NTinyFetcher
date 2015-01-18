@@ -1,59 +1,46 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
+using NTinyFetcher;
 using xNet.Net;
 
 namespace SandBox
 {
-    public class MultiThread
+    public class MultiThread : MultiFetcher
     {
-        private static object _locker = new object();
-        private static StreamWriter _outGoodWriter;
-        private static StreamWriter _outBadWriter;
-        private static ConcurrentQueue<string> urls;
+        private static readonly object _locker = new object();
+        private readonly StreamWriter _outGoodWriter;
+        private readonly StreamWriter _outBadWriter;
+        private readonly ConcurrentQueue<string> _urls;
 
-        static MultiThread()
+        public MultiThread(int threadCount)
+            : base(threadCount)
         {
             _outGoodWriter = new StreamWriter("result.txt");
             _outBadWriter = new StreamWriter("error.txt");
-            urls = new ConcurrentQueue<string>(File.ReadAllLines("urls.txt"));
+            _urls = new ConcurrentQueue<string>(File.ReadAllLines("urls.txt"));
         }
 
-        public void Perform()
+        protected override void OnFinish()
         {
-            var threads = new Thread[10];
-            for (int index = 0; index < threads.Length; index++)
-            {
-                threads[index] = new Thread(ThreadFunc);
-                threads[index].Start();
-            }
-
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
             _outGoodWriter.Dispose();
             _outBadWriter.Dispose();
         }
 
-        private void ThreadFunc()
+        protected override void ThreadFunc()
         {
             var urlFetcher = new UrlFetcher(GetUrl, OnError, OnAction);
             urlFetcher.Perform();
         }
 
-        private static string GetUrl()
+        private string GetUrl()
         {
             string item = null;
-            var result = urls.TryDequeue(out item);
+            var result = _urls.TryDequeue(out item);
             return result ? item : null;
         }
 
-        private static void OnError(Exception ex, string url, HttpRequest webClient)
+        private void OnError(Exception ex, string url, HttpRequest webClient)
         {
             lock (_locker)
             {
@@ -62,7 +49,7 @@ namespace SandBox
             }
         }
 
-        private static void OnAction(string url, HttpRequest webClient)
+        private void OnAction(string url, HttpRequest webClient)
         {
             var content = webClient.Get(url).ToString().ToLower();
             Console.WriteLine(url);
@@ -72,7 +59,5 @@ namespace SandBox
                 _outGoodWriter.Flush();
             }
         }
-
-
     }
 }

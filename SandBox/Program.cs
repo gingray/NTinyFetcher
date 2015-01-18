@@ -9,7 +9,7 @@ namespace SandBox
     {
         static void Main(string[] args)
         {
-            var multi = new MultiThread();
+            var multi = new MultiThread(10);
             multi.Perform();
 
             Console.WriteLine("Done");
